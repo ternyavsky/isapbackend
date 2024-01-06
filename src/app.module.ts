@@ -14,20 +14,25 @@ import { MessagesModule } from './messages/messages.module';
 import { Message } from './messages/message.entity';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: '172.17.0.1',
-    username: 'postgres',
-    password: 'postgres',
-    port: 5432,
-    database: 'isap',
-    synchronize: true,
-    autoLoadEntities: true
-  }),
-    UsersModule, ChatsModule, AuthModule, MessagesModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: '172.17.0.1',
+      username: 'postgres',
+      password: 'postgres',
+      port: 5432,
+      database: 'postgres',
+      synchronize: true,
+      autoLoadEntities: true,
+    }),
+    UsersModule,
+    ChatsModule,
+    AuthModule,
+    MessagesModule,
+  ],
   controllers: [AppController, ChatsController],
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) { }
+  constructor(private dataSource: DataSource) {}
 }

@@ -41,7 +41,7 @@ AppModule = _ts_decorate([
                 username: 'postgres',
                 password: 'postgres',
                 port: 5432,
-                database: 'isap',
+                database: 'postgres',
                 synchronize: true,
                 autoLoadEntities: true
             }),
