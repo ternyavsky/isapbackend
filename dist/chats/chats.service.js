@@ -50,6 +50,13 @@ let ChatsService = class ChatsService {
         for(let i in chat){
             for(let j in chat[i].members){
                 if (chat[i].members[j].username === user.username) {
+                    chat[i].messages.sort(function(a, b) {
+                        if (new Date(a.created_at).getTime() > new Date(b.created_at).getTime()) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    });
                     resultArray.push(chat[i]);
                 }
             }

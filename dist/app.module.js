@@ -37,7 +37,7 @@ AppModule = _ts_decorate([
         imports: [
             _typeorm.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: 'localhost',
+                host: '172.17.0.1',
                 username: 'postgres',
                 password: 'postgres',
                 port: 5432,

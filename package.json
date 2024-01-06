@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "ts-node src/index.ts",
-    "server": "yarn run start:dev -- -b swc ",
+    "server": "yarn run start:dev -- -b swc TZ=UTC",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/backend/main",
