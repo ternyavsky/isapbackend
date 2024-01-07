@@ -7,6 +7,7 @@ import { Message } from './message.entity';
 import { WsGuard } from './messages.guard';
 import { UseGuards } from '@nestjs/common';
 import { User } from '../users/users.entity';
+import { UsersService } from '../users/users.service';
 @WebSocketGateway({
   cors: "*"
 })
@@ -15,6 +16,7 @@ export class MessagesGateway {
   private server: Server
   constructor(
     private readonly messagesService: MessagesService,
+    private readonly userService: UsersService,
   ) { }
 
   @UseGuards(WsGuard)
@@ -26,6 +28,13 @@ export class MessagesGateway {
     this.server.emit("connectCall", user)
   }
 
+  @UseGuards(WsGuard)
+  @SubscribeMessage('changeUsername')
+  async changeName(client: Socket, body) {
+    const username: string = body["username"]
+    const user = await this.userService.changeUser(username, client.handshake.auth.user)
+    return this.server.emit("changeUsername", user)
+  }
 
 
 

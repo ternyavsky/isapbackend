@@ -15,6 +15,7 @@ const _socketio = require("socket.io");
 const _messageentity = require("./message.entity");
 const _messagesguard = require("./messages.guard");
 const _common = require("@nestjs/common");
+const _usersservice = require("../users/users.service");
 function _ts_decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -35,6 +36,11 @@ let MessagesGateway = class MessagesGateway {
         const userContext = client.handshake.auth.user;
         const user = await this.messagesService.connectCall(userContext.username);
         this.server.emit("connectCall", user);
+    }
+    async changeName(client, body) {
+        const username = body["username"];
+        const user = await this.userService.changeUser(username, client.handshake.auth.user);
+        return this.server.emit("changeUsername", user);
     }
     async discnnet(client) {
         console.log('disconnect call');
@@ -72,8 +78,9 @@ let MessagesGateway = class MessagesGateway {
     remove(id) {
         return this.messagesService.remove(id);
     }
-    constructor(messagesService){
+    constructor(messagesService, userService){
         this.messagesService = messagesService;
+        this.userService = userService;
     }
 };
 _ts_decorate([
@@ -89,6 +96,16 @@ _ts_decorate([
     ]),
     _ts_metadata("design:returntype", Promise)
 ], MessagesGateway.prototype, "connect", null);
+_ts_decorate([
+    (0, _common.UseGuards)(_messagesguard.WsGuard),
+    (0, _websockets.SubscribeMessage)('changeUsername'),
+    _ts_metadata("design:type", Function),
+    _ts_metadata("design:paramtypes", [
+        typeof _socketio.Socket === "undefined" ? Object : _socketio.Socket,
+        void 0
+    ]),
+    _ts_metadata("design:returntype", Promise)
+], MessagesGateway.prototype, "changeName", null);
 _ts_decorate([
     (0, _common.UseGuards)(_messagesguard.WsGuard),
     (0, _websockets.SubscribeMessage)('disconnectCall'),
@@ -166,6 +183,7 @@ MessagesGateway = _ts_decorate([
     }),
     _ts_metadata("design:type", Function),
     _ts_metadata("design:paramtypes", [
-        typeof _messagesservice.MessagesService === "undefined" ? Object : _messagesservice.MessagesService
+        typeof _messagesservice.MessagesService === "undefined" ? Object : _messagesservice.MessagesService,
+        typeof _usersservice.UsersService === "undefined" ? Object : _usersservice.UsersService
     ])
 ], MessagesGateway);

@@ -12,6 +12,7 @@ export class ChatsController {
     @UseGuards(AuthGuard)
     @Get("/chats")
     getChats(@Req() req: Request) {
+        console.log(req["user"].username, "15 string")
         return this.chatService.findChatUser(req["user"])
     }
 

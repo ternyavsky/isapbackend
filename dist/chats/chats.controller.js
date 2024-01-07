@@ -27,6 +27,7 @@ function _ts_param(paramIndex, decorator) {
 }
 let ChatsController = class ChatsController {
     getChats(req) {
+        console.log(req["user"].username, "15 string");
         return this.chatService.findChatUser(req["user"]);
     }
     constructor(chatService){
